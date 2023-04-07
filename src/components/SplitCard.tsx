@@ -2,12 +2,12 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import React from 'react'
 
-export interface SplitCardProps {
+export type SplitCardProps = React.PropsWithChildren<{
   title: string
   subtitle?: string
-  children: React.ReactChild | React.ReactChildren
-}
+}>
 
 export function SplitCard(props: SplitCardProps) {
   return (
