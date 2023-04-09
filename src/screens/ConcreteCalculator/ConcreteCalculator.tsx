@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import InputAdornment from '@mui/material/InputAdornment'
 import Stack from '@mui/material/Stack'
@@ -24,7 +24,7 @@ export function ConcreteCalculator() {
   const sandMassRatio = sandDryVolumeRatio / cementDryVolumeRatio
   const aggregateMassRatio = aggregateDryVolumeRatio / cementDryVolumeRatio
 
-  const { kgsOfCement, kgsOfSand, kgsOfAggregate } = useMemo(() => {
+  const results = useMemo(() => {
     const cementDivisor = 1000 * materials.cementSpecificGravity
     const waterRatio = materials.waterCementRatio / 1000
     const sandRatio = sandMassRatio / (1000 * materials.sandSpecificGravity)
@@ -39,11 +39,15 @@ export function ConcreteCalculator() {
     const kgsOfCement = materials.targetVolume / x
     const kgsOfSand = kgsOfCement * materials.sandRatio
     const kgsOfAggregate = kgsOfCement * materials.aggregateRatio
-    return { kgsOfCement, kgsOfSand, kgsOfAggregate }
+    return {
+      kgsOfCement,
+      cubesOfCement: kgsOfCement / materials.cementBulkDensity,
+      kgsOfSand,
+      cubesOfSand: kgsOfSand / materials.sandBulkDensity,
+      kgsOfAggregate,
+      cubesOfAggregate: kgsOfAggregate / materials.aggregateBulkDensity,
+    }
   }, [aggregateMassRatio, sandMassRatio, cementMassRatio, materials])
-
-  // const equation = `(${materials.waterCementRatio} * x)/1000 + x/(1000 * ${materials.cementSpecificGravity}) + (${sandMassRatio} * x)/(1000 * ${materials.sandSpecificGravity}) + (${aggregateMassRatio} * x)/(1000 * ${materials.aggregateSpecificGravity}) = ${materials.targetVolume}`
-  // const output = math.rationalize(equation)
 
   return (
     <Screen title="Concrete Calculator">
@@ -203,7 +207,29 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Cement"
-                value={formatNumber(kgsOfCement)}
+                value={formatNumber(results.kgsOfCement)}
+                size="small"
+                disabled
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">kgs</InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                label="Cement"
+                value={formatNumber(results.cubesOfCement)}
+                size="small"
+                disabled
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">m³</InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                label="Sand"
+                value={formatNumber(results.kgsOfSand)}
                 size="small"
                 disabled
                 InputProps={{
@@ -214,7 +240,18 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Sand"
-                value={formatNumber(kgsOfSand)}
+                value={formatNumber(results.cubesOfSand)}
+                size="small"
+                disabled
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">m³</InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                label="Aggregate"
+                value={formatNumber(results.kgsOfAggregate)}
                 size="small"
                 disabled
                 InputProps={{
@@ -225,12 +262,12 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Aggregate"
-                value={formatNumber(kgsOfAggregate)}
+                value={formatNumber(results.cubesOfAggregate)}
                 size="small"
                 disabled
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="end">kgs</InputAdornment>
+                    <InputAdornment position="end">m³</InputAdornment>
                   ),
                 }}
               />
