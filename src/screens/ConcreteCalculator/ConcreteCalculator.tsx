@@ -8,7 +8,8 @@ import Section from '../../components/Section'
 import { useMaterialStore } from './store'
 import { useMemo } from 'react'
 
-const formatNumber = (value: number) => numeral(value).format('0[.]0')
+const formatNumber = (value: number, precision = 1) =>
+  numeral(value).format(`0[.]${'0'.repeat(precision)}`)
 
 export function ConcreteCalculator() {
   const materials = useMaterialStore()
@@ -207,7 +208,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Cement"
-                value={formatNumber(results.kgsOfCement)}
+                value={formatNumber(results.kgsOfCement, 2)}
                 size="small"
                 disabled
                 InputProps={{
@@ -218,7 +219,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Cement"
-                value={formatNumber(results.cubesOfCement)}
+                value={formatNumber(results.cubesOfCement, 4)}
                 size="small"
                 disabled
                 InputProps={{
@@ -229,7 +230,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Sand"
-                value={formatNumber(results.kgsOfSand)}
+                value={formatNumber(results.kgsOfSand, 2)}
                 size="small"
                 disabled
                 InputProps={{
@@ -240,7 +241,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Sand"
-                value={formatNumber(results.cubesOfSand)}
+                value={formatNumber(results.cubesOfSand, 4)}
                 size="small"
                 disabled
                 InputProps={{
@@ -251,7 +252,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Aggregate"
-                value={formatNumber(results.kgsOfAggregate)}
+                value={formatNumber(results.kgsOfAggregate, 2)}
                 size="small"
                 disabled
                 InputProps={{
@@ -262,7 +263,7 @@ export function ConcreteCalculator() {
               />
               <TextField
                 label="Aggregate"
-                value={formatNumber(results.cubesOfAggregate)}
+                value={formatNumber(results.cubesOfAggregate, 4)}
                 size="small"
                 disabled
                 InputProps={{
