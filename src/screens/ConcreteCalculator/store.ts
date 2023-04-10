@@ -1,54 +1,67 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface MaterialState {
   cementSpecificGravity: number
-  setCementSpecificGravity: (cementSpecificGravity: number) => any
+  setCementSpecificGravity: (cementSpecificGravity: number) => void
   sandSpecificGravity: number
-  setSandSpecificGravity: (sandSpecificGravity: number) => any
+  setSandSpecificGravity: (sandSpecificGravity: number) => void
   aggregateSpecificGravity: number
-  setAggregateSpecificGravity: (aggregateSpecificGravity: number) => any
+  setAggregateSpecificGravity: (aggregateSpecificGravity: number) => void
   waterCementRatio: number
-  setWaterCementRatio: (waterCementRatio: number) => any
+  setWaterCementRatio: (waterCementRatio: number) => void
   cementRatio: number
-  setCementRatio: (cementRatio: number) => any
+  setCementRatio: (cementRatio: number) => void
   sandRatio: number
-  setSandRatio: (sandRatio: number) => any
+  setSandRatio: (sandRatio: number) => void
   aggregateRatio: number
-  setAggregateRatio: (aggregateRatio: number) => any
+  setAggregateRatio: (aggregateRatio: number) => void
   cementBulkDensity: number
-  setCementBulkDensity: (cementBulkDensity: number) => any
+  setCementBulkDensity: (cementBulkDensity: number) => void
   sandBulkDensity: number
-  setSandBulkDensity: (sandBulkDensity: number) => any
+  setSandBulkDensity: (sandBulkDensity: number) => void
   aggregateBulkDensity: number
-  setAggregateBulkDensity: (aggregateBulkDensity: number) => any
+  setAggregateBulkDensity: (aggregateBulkDensity: number) => void
   targetVolume: number
-  setTargetVolume: (targetVolume: number) => any
+  setTargetVolume: (targetVolume: number) => void
+  resetDefaults: () => void
 }
 
-export const useMaterialStore = create<MaterialState>((set) => ({
+const defaults = {
   cementSpecificGravity: 3.15,
-  setCementSpecificGravity: (cementSpecificGravity) =>
-    set({ cementSpecificGravity }),
   sandSpecificGravity: 2.6,
-  setSandSpecificGravity: (sandSpecificGravity) => set({ sandSpecificGravity }),
   aggregateSpecificGravity: 2.6,
-  setAggregateSpecificGravity: (aggregateSpecificGravity) =>
-    set({ aggregateSpecificGravity }),
   waterCementRatio: 0.45,
-  setWaterCementRatio: (waterCementRatio) => set({ waterCementRatio }),
   cementRatio: 1,
-  setCementRatio: (cementRatio) => set({ cementRatio }),
   sandRatio: 2,
-  setSandRatio: (sandRatio) => set({ sandRatio }),
   aggregateRatio: 3,
-  setAggregateRatio: (aggregateRatio) => set({ aggregateRatio }),
   cementBulkDensity: 1500,
-  setCementBulkDensity: (cementBulkDensity) => set({ cementBulkDensity }),
   sandBulkDensity: 1700,
-  setSandBulkDensity: (sandBulkDensity) => set({ sandBulkDensity }),
   aggregateBulkDensity: 1650,
-  setAggregateBulkDensity: (aggregateBulkDensity) =>
-    set({ aggregateBulkDensity }),
   targetVolume: 1,
-  setTargetVolume: (targetVolume) => set({ targetVolume }),
-}))
+} as const
+
+export const useMaterialStore = create<MaterialState>()(
+  persist(
+    (set) => ({
+      ...defaults,
+      setCementSpecificGravity: (cementSpecificGravity) =>
+        set({ cementSpecificGravity }),
+      setSandSpecificGravity: (sandSpecificGravity) =>
+        set({ sandSpecificGravity }),
+      setAggregateSpecificGravity: (aggregateSpecificGravity) =>
+        set({ aggregateSpecificGravity }),
+      setWaterCementRatio: (waterCementRatio) => set({ waterCementRatio }),
+      setCementRatio: (cementRatio) => set({ cementRatio }),
+      setSandRatio: (sandRatio) => set({ sandRatio }),
+      setAggregateRatio: (aggregateRatio) => set({ aggregateRatio }),
+      setCementBulkDensity: (cementBulkDensity) => set({ cementBulkDensity }),
+      setSandBulkDensity: (sandBulkDensity) => set({ sandBulkDensity }),
+      setAggregateBulkDensity: (aggregateBulkDensity) =>
+        set({ aggregateBulkDensity }),
+      setTargetVolume: (targetVolume) => set({ targetVolume }),
+      resetDefaults: () => set(defaults),
+    }),
+    { name: 'material-store' },
+  ),
+)

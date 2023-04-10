@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -51,7 +52,12 @@ export function ConcreteCalculator() {
   }, [aggregateMassRatio, sandMassRatio, cementMassRatio, materials])
 
   return (
-    <Screen title="Concrete Calculator">
+    <Screen
+      title="Concrete Calculator"
+      actions={[
+        <Button onClick={materials.resetDefaults}>Reset Defaults</Button>,
+      ]}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={4}>
           <Section title="Material Properties">
